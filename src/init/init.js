@@ -356,7 +356,7 @@ export const init = () => {
     gl.setSize(width, height);
     gl.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   });
-
+  
   /**
    * Fullscreen
    */
@@ -391,4 +391,6 @@ export const init = () => {
   controls.constraint.smoothZoom = true;
   controls.constraint.zoomDampingFactor = 0.2;
   controls.constraint.smoothZoomSpeed = 10;
+
+  
 };

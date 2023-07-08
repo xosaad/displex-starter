@@ -3,8 +3,13 @@ export default /*glsl*/`
 varying vec3 vPosition;
 varying vec3 vNormal;
 varying vec2 vUv;
+varying vec3 vPattern;
 
+uniform vec2 uResolution;
 uniform float uTime;
+uniform float uDisplace;
+uniform float uSpread;
+uniform float uNoise;
 
 #define PI 3.14159265358979
 #define MOD3 vec3(.1031,.11369,.13787)
@@ -45,8 +50,11 @@ void main() {
     vPosition = position;
     vNormal = normal;
     
-    vec3 displacement = vec3(0.0);
-    vec3 newPosition = vPosition + vNormal * displacement; 
+    float pat = pnoise(vec3(vUv * uNoise , sin(uTime) * 1.4 )) * uDisplace ;
+    float proximity = abs(vUv.x - (.5 + sin(uTime)/(12. * uSpread ) ));
+
+    vec3 full = pat * vec3(clamp(.23 * uSpread  - proximity , 0., 1.));
+    vec3 newPosition = vPosition + vNormal * full; 
 
     gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
 }
